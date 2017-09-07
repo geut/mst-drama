@@ -1,0 +1,62 @@
+{
+  "name": "mst-drama",
+  "version": "1.0.0",
+  "description": "A set of functions to work with the actions of mobx-state-tree",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "posttest": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/tinchoz49/mst-drama.git"
+  },
+  "keywords": [
+    "mobx-state-tree",
+    "mobx",
+    "redux-devtools",
+    "action"
+  ],
+  "author": "Martín Acosta",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tinchoz49/mst-drama/issues"
+  },
+  "homepage": "https://github.com/tinchoz49/mst-drama#readme",
+  "eslintConfig": {
+    "env": {
+      "jest": true
+    },
+    "extends": [
+      "xo-space",
+      "prettier"
+    ],
+    "plugins": [
+      "prettier"
+    ],
+    "rules": {
+      "prettier/prettier": [
+        "error",
+        {
+          "singleQuote": true,
+          "semi": true,
+          "bracketSpacing": true
+        }
+      ]
+    }
+  },
+  "dependencies": {
+    "fast-safe-stringify": "^1.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.5.0",
+    "eslint-config-prettier": "^2.3.0",
+    "eslint-config-xo-space": "^0.16.0",
+    "eslint-plugin-prettier": "^2.2.0",
+    "jest": "^20.0.4",
+    "prettier": "^1.5.3"
+  },
+  "peerDependencies": {
+    "mobx-state-tree": "^0.10.2"
+  }
+}

@@ -1,16 +1,16 @@
-const { addMiddleware, getSnapshot } = require('mobx-state-tree');
-const safeStringify = require('fast-safe-stringify');
+import { addMiddleware, getSnapshot } from 'mobx-state-tree';
+import stringify from 'fast-safe-stringify';
 
 const createAction = (rawCall, prefix = '') => {
   return {
     status: prefix,
     rootId: rawCall.rootId,
     name: rawCall.name,
-    args: rawCall.args.map(arg => safeStringify(arg))
+    args: rawCall.args.map(arg => stringify(arg))
   };
 };
 
-exports.onActionPatch = (target, ...args) => {
+export const onActionPatch = (target, ...args) => {
   let listener;
   let userOptions;
 

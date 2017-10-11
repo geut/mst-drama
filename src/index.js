@@ -1,11 +1,10 @@
-const { applySnapshot, getSnapshot } = require('mobx-state-tree');
-const { onActionPatch } = require('./lib/action');
-const { processMap } = require('./lib/process');
+import { applySnapshot, getSnapshot } from 'mobx-state-tree';
+import { onActionPatch } from './action';
 
-exports.onActionPatch = onActionPatch;
-exports.processMap = processMap;
+export * from './process';
+export { onActionPatch, connectReduxDevtools };
 
-exports.connectReduxDevtools = function(remoteDevDep, model, options) {
+function connectReduxDevtools(remoteDevDep, model, options) {
   // Connect to the monitor
   const remotedev = remoteDevDep.connectViaExtension();
   let applyingSnapshot = false;
@@ -27,9 +26,9 @@ exports.connectReduxDevtools = function(remoteDevDep, model, options) {
       return;
     }
     const copy = {};
-    copy.type = `${action.status
+    copy.type = action.status
       ? `${action.status}/${action.rootId}/${action.name}`
-      : ''}`;
+      : `${action.name}`;
 
     if (action.args) {
       action.args.forEach((value, index) => {
@@ -41,4 +40,4 @@ exports.connectReduxDevtools = function(remoteDevDep, model, options) {
   });
 
   remotedev.init(getSnapshot(model));
-};
+}

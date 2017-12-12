@@ -1,4 +1,4 @@
-import { process as co } from 'mobx-state-tree';
+import { flow } from 'mobx-state-tree';
 
 function isGenerator(obj) {
   return typeof obj.next === 'function' && typeof obj.throw === 'function';
@@ -15,10 +15,10 @@ function isGeneratorFunction(obj) {
   return isGenerator(constructor.prototype);
 }
 
-export const processMap = (props = {}) => {
+export const flowMap = (props = {}) => {
   return Object.keys(props).reduce((result, key) => {
     if (isGeneratorFunction(props[key])) {
-      result[key] = co(props[key]);
+      result[key] = flow(props[key]);
       return result;
     }
 

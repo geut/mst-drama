@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { observer } from 'mobx-react';
 import RootStore from './store';
-import { connectReduxDevtools } from 'mst-drama';
+import { connectReduxDevtools } from './mst-drama';
 
 const store = RootStore.create({
   syncCount: 0,
@@ -14,16 +14,16 @@ const App = observer(function() {
     <div>
       <div>
         Sync: {store.syncCount}
-        <button onClick={() => store.syncInc()}>Increment</button>
+        <button onClick={() => store.syncInc()}>Increment Sync</button>
       </div>
       <div>
         Async: {store.asyncCount}
-        <button onClick={() => store.asyncInc()}>Increment</button>
+        <button onClick={() => store.asyncInc()}>Increment Async</button>
       </div>
     </div>
   );
 });
 
-connectReduxDevtools(require('remotedev'), store, { trackPatches: true });
+connectReduxDevtools(require('remotedev'), store, { trackYield: true });
 
 ReactDOM.render(<App />, document.getElementById('root'));

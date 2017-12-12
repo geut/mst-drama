@@ -1,0 +1,22 @@
+{
+  "env": {
+    "jest": true
+  },
+  "extends": [
+    "xo-space",
+    "prettier"
+  ],
+  "plugins": [
+    "prettier"
+  ],
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "singleQuote": true,
+        "semi": true,
+        "bracketSpacing": true
+      }
+    ]
+  }
+}

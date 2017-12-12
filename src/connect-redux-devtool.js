@@ -1,4 +1,4 @@
-import { addMiddleware, getSnapshot } from 'mobx-state-tree';
+import { addMiddleware, getSnapshot, applySnapshot } from 'mobx-state-tree';
 import stringify from 'fast-safe-stringify';
 
 const createAction = (rawCall, prefix = '') => {
@@ -10,7 +10,7 @@ const createAction = (rawCall, prefix = '') => {
   };
 };
 
-export const onActionPatch = (target, ...args) => {
+const onActionStep = (target, ...args) => {
   let listener;
   let userOptions;
 
@@ -51,14 +51,14 @@ export const onActionPatch = (target, ...args) => {
     }
 
     // First spawn
-    if (type === 'process_spawn' && parentId === rootId && ps.has(rootId)) {
+    if (type === 'flow_spawn' && parentId === rootId && ps.has(rootId)) {
       const action = ps.get(rootId);
       action.isAsync = true;
       return next(rawCall);
     }
 
-    // We track each patch on the current root action
-    if (type === 'process_resume' && ps.has(rootId)) {
+    // We track each yield on the current root action
+    if (type === 'flow_resume' && ps.has(rootId)) {
       const action = ps.get(rootId);
       const result = next(rawCall);
       if (!action.lastSnapshot) {
@@ -67,17 +67,17 @@ export const onActionPatch = (target, ...args) => {
         return result;
       }
       if (
-        options.trackPatches &&
+        options.trackYield &&
         action.lastSnapshot !== getSnapshot(rawCall.tree)
       ) {
         action.lastSnapshot = getSnapshot(rawCall.tree);
-        listener(createAction(action, '@@PATCH'));
+        listener(createAction(action, '@@YIELD'));
       }
       return result;
     }
 
     // Last state of the complete root action
-    if (type === 'process_return' && parentId === rootId && ps.has(rootId)) {
+    if (type === 'flow_return' && parentId === rootId && ps.has(rootId)) {
       const action = ps.get(rootId);
       ps.delete(rootId);
       const result = next(rawCall);
@@ -85,7 +85,7 @@ export const onActionPatch = (target, ...args) => {
       return result;
     }
 
-    if (type === 'process_throw' && parentId === rootId && ps.has(rootId)) {
+    if (type === 'flow_throw' && parentId === rootId && ps.has(rootId)) {
       const action = ps.get(rootId);
       ps.delete(rootId);
       const result = next(rawCall);
@@ -96,3 +96,43 @@ export const onActionPatch = (target, ...args) => {
     return next(rawCall);
   });
 };
+
+export default function connectReduxDevtools(remoteDevDep, model, options) {
+  // Connect to the monitor
+  const remotedev = remoteDevDep.connectViaExtension();
+  let applyingSnapshot = false;
+
+  // Subscribe to change state (if need more than just logging)
+  remotedev.subscribe(message => {
+    // Helper when only time travelling needed
+    const state = remoteDevDep.extractState(message);
+    if (state) {
+      applyingSnapshot = true;
+      applySnapshot(model, state);
+      applyingSnapshot = false;
+    }
+  });
+
+  // Send changes to the remote monitor
+  onActionStep(model, options, action => {
+    if (applyingSnapshot) {
+      return;
+    }
+
+    const copy = {};
+
+    copy.type = action.status
+      ? `${action.status}/${action.rootId}/${action.name}`
+      : `${action.name}`;
+
+    if (action.args) {
+      action.args.forEach((value, index) => {
+        copy[index] = value;
+      });
+    }
+
+    remotedev.send(copy, getSnapshot(model));
+  });
+
+  remotedev.init(getSnapshot(model));
+}

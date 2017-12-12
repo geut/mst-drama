@@ -1,35 +1,27 @@
-import { types, process } from 'mobx-state-tree';
+import { types } from 'mobx-state-tree';
+import { flowMap } from 'mst-drama';
 
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
 
 export default types
   .model('root', {
     syncCount: types.number,
-    asyncCount: types.number,
-    one: types.maybe(types.boolean),
-    two: types.maybe(types.boolean),
-    three: types.maybe(types.boolean),
-    otro: types.maybe(types.boolean)
+    asyncCount: types.number
   })
-  .actions(self => ({
-    syncInc() {
-      self.syncCount++;
-    },
-    asyncInc: process(function*() {
-      self.asyncCount++;
-      yield self.runTwo();
-      self.one = true;
-    }),
-    runTwo: process(function*() {
-      self.asyncCount++;
-      yield delay(2000);
-      self.otro = true;
-      yield self.runThree();
-      self.two = true;
-    }),
-    runThree: process(function*() {
-      self.asyncCount++;
-      yield delay(2000);
-      self.three = true;
+  .actions(self =>
+    flowMap({
+      syncInc() {
+        self.syncCount++;
+      },
+      asyncInc: function*() {
+        self.asyncCount++;
+        yield self.asyncMultiply(2);
+        self.asyncCount++;
+        yield self.asyncMultiply(4);
+      },
+      asyncMultiply: function*(value) {
+        yield delay(2000);
+        self.asyncCount *= value;
+      }
     })
-  }));
+  );

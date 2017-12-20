@@ -27,6 +27,8 @@ import { connectReduxDevtools } from '@geut/mst-drama';
 connectReduxDevtools(require('remotedev'), store);
 ```
 
+![connect-redux-devtool](https://github.com/geut/mst-drama/raw/master/example/connect-redux-devtool.gif)
+
 #### flowMap(actions: object)
 
 flowMap iterates over an object of actions and converts each generator function founded in a flow async action.

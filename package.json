@@ -1,6 +1,6 @@
 {
-  "name": "mst-drama",
-  "version": "1.0.0",
+  "name": "@geut/mst-drama",
+  "version": "0.0.1",
   "description": "A set of functions to work with the actions of mobx-state-tree",
   "main": "dist/index.js",
   "files": [
@@ -9,11 +9,13 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production rollup -c",
     "test": "cross-env NODE_ENV=development jest",
-    "posttest": "eslint src test"
+    "posttest": "eslint src test",
+    "version": "chan release ${npm_package_version} && git add .",
+    "prepublish": "npm test && npm run build"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/tinchoz49/mst-drama.git"
+    "url": "git+ssh://git@github.com/geut/mst-drama.git"
   },
   "keywords": [
     "mobx-state-tree",
@@ -21,12 +23,15 @@
     "redux-devtools",
     "action"
   ],
-  "author": "Martín Acosta",
+  "author": {
+    "name": "GEUT",
+    "email": "contact@geutstudio.com"
+  },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tinchoz49/mst-drama/issues"
+    "url": "https://github.com/geut/mst-drama/issues"
   },
-  "homepage": "https://github.com/tinchoz49/mst-drama#readme",
+  "homepage": "https://github.com/geut/mst-drama#readme",
   "dependencies": {
     "fast-safe-stringify": "^1.2.1"
   },

@@ -13,13 +13,13 @@ export default types
       syncInc() {
         self.syncCount++;
       },
-      asyncInc: function*() {
+      *asyncInc() {
         self.asyncCount++;
         yield self.asyncMultiply(2);
         self.asyncCount++;
         yield self.asyncMultiply(4);
       },
-      asyncMultiply: function*(value) {
+      *asyncMultiply(value) {
         yield delay(2000);
         self.asyncCount *= value;
       }

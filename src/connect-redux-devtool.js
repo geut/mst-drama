@@ -97,6 +97,26 @@ const onActionStep = (target, ...args) => {
   });
 };
 
+export function track(model, options, cb) {
+  onActionStep(model, options, action => {
+    const actionTrack = {};
+
+    actionTrack.type = action.status
+      ? `${action.status}/${action.rootId}/${action.name}`
+      : `${action.name}`;
+
+    actionTrack.rootId = action.rootId;
+
+    if (action.args) {
+      action.args.forEach((value, index) => {
+        actionTrack[index] = value;
+      });
+    }
+
+    cb(actionTrack, getSnapshot(model));
+  });
+}
+
 export default function connectReduxDevtools(remoteDevDep, model, options) {
   // Connect to the monitor
   const remotedev = remoteDevDep.connectViaExtension();
@@ -114,24 +134,11 @@ export default function connectReduxDevtools(remoteDevDep, model, options) {
   });
 
   // Send changes to the remote monitor
-  onActionStep(model, options, action => {
+  track(model, options, (action, snapshot) => {
     if (applyingSnapshot) {
       return;
     }
-
-    const copy = {};
-
-    copy.type = action.status
-      ? `${action.status}/${action.rootId}/${action.name}`
-      : `${action.name}`;
-
-    if (action.args) {
-      action.args.forEach((value, index) => {
-        copy[index] = value;
-      });
-    }
-
-    remotedev.send(copy, getSnapshot(model));
+    remotedev.send(action, snapshot);
   });
 
   remotedev.init(getSnapshot(model));

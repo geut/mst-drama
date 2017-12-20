@@ -1,5 +1,5 @@
 import { types } from 'mobx-state-tree';
-import { flowMap } from 'mst-drama';
+import { flowMap } from './mst-drama';
 
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
 

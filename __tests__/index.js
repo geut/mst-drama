@@ -1,4 +1,4 @@
-import { flowMap } from '../';
+import { flowMap } from '../src';
 import { track } from '../src/connect-redux-devtool';
 import { types, flow } from 'mobx-state-tree';
 

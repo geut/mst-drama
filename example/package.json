@@ -9,15 +9,14 @@
     "mst-drama": "file:..",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-scripts": "^1.0.17"
+    "setimmediate": "^1.0.5"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "start": "parcel src/index.html"
   },
   "devDependencies": {
+    "babel-preset-react-app": "^3.1.0",
+    "parcel-bundler": "^1.2.1",
     "remotedev": "^0.2.7"
   }
 }

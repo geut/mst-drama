@@ -1,8 +1,9 @@
+import 'setimmediate';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { observer } from 'mobx-react';
 import RootStore from './store';
-import { connectReduxDevtools } from './mst-drama';
+import { connectReduxDevtools } from 'mst-drama';
 
 const store = RootStore.create({
   syncCount: 0,

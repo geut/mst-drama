@@ -1,6 +1,6 @@
 {
   "name": "@geut/mst-drama",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A set of functions to work with the actions of mobx-state-tree",
   "main": "dist/index.js",
   "files": [

@@ -31,7 +31,7 @@ connectReduxDevtools(require('remotedev'), store);
 
 #### flowMap(actions: object)
 
-flowMap iterates over an object of actions and converts each generator function founded in a flow async action.
+flowMap iterates over an object of actions and converts each generator function found in a flow async action.
 
 ```javascript
 ...

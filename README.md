@@ -2,6 +2,7 @@
 > an event or situation, especially an unexpected one, in which there is worry or excitement and usually a lot of **action**
 
 [![Build Status](https://travis-ci.org/geut/mst-drama.svg?branch=master)](https://travis-ci.org/geut/mst-drama)
+[![Stability: Experimental](https://masterminds.github.io/stability/experimental.svg)](https://masterminds.github.io/stability/experimental.html)
 
 ## Contents
 

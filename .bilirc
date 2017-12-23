@@ -1,0 +1,4 @@
+{
+  "format": ["cjs-min", "umd-min"],
+  "external": ["mobx", "mobx-state-tree"]
+}

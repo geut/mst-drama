@@ -5,17 +5,7 @@
   "env": {
     "development": {
       "presets": [
-        "es2015"
-      ]
-    },
-    "production": {
-      "presets": [
-        [
-      	  "env",
-	      {
-	        "modules": false
-          }
-        ]
+        "env"
       ]
     }
   }
